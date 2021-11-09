@@ -1,4 +1,6 @@
 # TO DO:
+- PRAZO DE ENTREGA :: 28 de novembro!!
+- NOTA :: ficheiros do codigo fonte :: DEVIDAMENTE COMENTADOS!!
 
 - 1
 	- Implementar fibLista
@@ -18,3 +20,6 @@
 	- Compare as resoluções das alíneas 1 e 3 com tipos (Int -> Int), (Integer -> Integer) e (BigNumber -> BigNumber), comparando a sua aplicação a números grandes e verificando qual o maior número que cada uma aceita como argumento.
 - 5
 	- Acrescente ao módulo de big-numbers da alínea 2 a capacidade de detetar divisões por zero em compile-time. Para isso, a função divisão deverá retornar monads do tipo Maybe. A função alternativa para a divisão inteira deverá se chamar safeDivBN e ter o tipo: safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
+
+
+- Mover ficheiros do codigo fonte para o mesmo nivel que o README.pdf  (e não num subdiretório)
