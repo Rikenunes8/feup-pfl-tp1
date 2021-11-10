@@ -33,6 +33,3 @@ fibListaInfinita n
     | n <= 0     = error "argumento não positivo"
     | otherwise = let fibs = (0 : 1 : [a + b | (a,b) <- zip fibs (tail fibs)])
                   in fibs !! fromIntegral(n - 1)
-
-
--- NOTA:: aparece um exemplo da sequencia fibonacci nos exercicos do livro "Learning by solving problems"
