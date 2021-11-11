@@ -1,4 +1,19 @@
-data BigNumber = Positive [Int] | Negative [Int]
+module BigNumber (BigNumber) where
+
+-- 2.1) a definição do tipo BigNumber
+data BigNumber = Positive [Int] 
+               | Negative [Int]
+
+
+-- 2.2) converte uma string em big-number
+-- scanner :: String -> BigNumber
+
+
+-- 2.3) converte um big-number em string
+-- output :: BigNumber -> String
+
+
+
 
 bnToList::BigNumber -> [Int]
 bnToList (Positive l) = l
