@@ -9,12 +9,13 @@ data BigNumber = Positive [Int]
 -- scanner :: String -> BigNumber
 
 
+
 -- 2.3) converte um big-number em string
 -- output :: BigNumber -> String
 
 
 
-
+-- 2.4) soma dois big-numbers.
 bnToList::BigNumber -> [Int]
 bnToList (Positive l) = l
 
@@ -30,3 +31,19 @@ cleanLeft0s (Positive l) = Positive (reverse (dropWhile (== 0) (reverse l)))
 somaBN::BigNumber -> BigNumber -> BigNumber
 somaBN a b  = let aux = [x+y | (x,y) <- zipDefault0 (bnToList a) (bnToList b)]
               in cleanLeft0s (Positive [ x `mod` 10 + y `div` 10 | (x, y) <- zipDefault0 aux (0:aux)])
+
+
+-- 2.5) subtraí dois big-numbers.
+-- subBN :: BigNumber -> BigNumber -> BigNumber
+
+
+
+-- 2.6) multiplica dois big-numbers.
+-- mulBN :: BigNumber -> BigNumber -> BigNumber
+
+
+
+-- 2.7) efetua a divisão inteira de dois big-numbers. Retornar um par “(quociente, resto)” 
+-- [Assumindo que ambos os argumentos são positivos]
+-- divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+
