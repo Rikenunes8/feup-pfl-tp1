@@ -10,20 +10,20 @@ instance Show BigNumber where
     show (Positive digits) = "Positive " ++ show digits
     show (Negative digits) = "Negative " ++ show digits
 
--- Funções auxiliares
+-------- FUNÇÕES AUXILIARES ---------
+-- O mesmo que zip mas em vez de descartar os elementos a mais de uma lista acrescenta 0s na menor lista
 zipDefault0::[Int] -> [Int] -> [(Int, Int)]
 zipDefault0 [] []         = []
 zipDefault0 (x:xs) []     = (x,0):(zipDefault0 xs [])
 zipDefault0 [] (y:ys)     = (0,y):(zipDefault0 [] ys)
 zipDefault0 (x:xs) (y:ys) = (x,y):(zipDefault0 xs ys)
-
+-- converte um BigNumber para uma lista de inteiros
 bnToList::BigNumber -> [Int]
 bnToList (Positive l) = l
-
-
+-- Limpa os zeros à esquerda
 cleanLeft0s::BigNumber -> BigNumber
 cleanLeft0s (Positive l) = Positive (reverse (dropWhile (== 0) (reverse l)))
-
+---------------------------------------
 
 -- 2.2) converte uma string em big-number
 stringToN :: String -> [Int]
