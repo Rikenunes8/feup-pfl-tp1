@@ -1,18 +1,35 @@
 module BigNumber (BigNumber) where
 
+import Data.Char (digitToInt)
+
 -- 2.1) a definição do tipo BigNumber
 data BigNumber = Positive [Int] 
                | Negative [Int]
 
+instance Show BigNumber where
+    show (Positive digits) = "Positive " ++ show digits
+    show (Negative digits) = "Negative " ++ show digits
+
 
 -- 2.2) converte uma string em big-number
--- scanner :: String -> BigNumber
+stringToN :: String -> [Int]
+stringToN "" = []
+stringToN (x:xs) = (digitToInt x) : stringToN xs
 
+scanner :: String -> BigNumber
+scanner ('-':s) = Negative (stringToN s)
+scanner ('+':s) = Positive (stringToN s)
+scanner s       = Positive (stringToN s)
 
 
 -- 2.3) converte um big-number em string
--- output :: BigNumber -> String
+nToString :: [Int] -> String
+nToString [] = ""
+nToString (x:xs) = (show x) ++ nToString xs 
 
+output :: BigNumber -> String
+output (Negative bn) = "-" ++ nToString bn
+output (Positive bn) = "+" ++ nToString bn
 
 
 -- 2.4) soma dois big-numbers.
