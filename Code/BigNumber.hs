@@ -33,8 +33,7 @@ cleanLeft0s (Negative l) = Negative (dropWhile (== 0) l)
 
 -- 2.2) converte uma string em big-number
 stringToN :: String -> [Int]
-stringToN "" = []
-stringToN (x:xs) = (digitToInt x) : stringToN xs
+stringToN = foldr (\x y -> digitToInt x : y) []
 
 scanner :: String -> BigNumber
 scanner ('-':s) = Negative (stringToN s)
@@ -44,8 +43,7 @@ scanner s       = Positive (stringToN s)
 
 -- 2.3) converte um big-number em string
 nToString :: [Int] -> String
-nToString [] = ""
-nToString (x:xs) = (show x) ++ nToString xs 
+nToString = foldr (\x y -> show x ++ y) ""
 
 output :: BigNumber -> String
 output (Negative bn) = "-" ++ nToString bn
