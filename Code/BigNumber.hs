@@ -5,10 +5,15 @@ import Data.Char (digitToInt)
 -- 2.1) a definição do tipo BigNumber
 data BigNumber = Positive [Int] 
                | Negative [Int]
+               deriving (Eq)
 
 instance Show BigNumber where
     show (Positive digits) = "Positive " ++ show digits
     show (Negative digits) = "Negative " ++ show digits
+
+instance Ord BigNumber where
+    (Positive a) <= (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) <= output (Positive b))) 
+    (Positive a) < (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) < output (Positive b)))
 
 -------- FUNÇÕES AUXILIARES ---------
 -- O mesmo que zip mas em vez de descartar os elementos a mais de uma lista acrescenta 0s na menor lista
@@ -22,7 +27,8 @@ bnToList::BigNumber -> [Int]
 bnToList (Positive l) = l
 -- Limpa os zeros à esquerda
 cleanLeft0s::BigNumber -> BigNumber
-cleanLeft0s (Positive l) = Positive (reverse (dropWhile (== 0) (reverse l)))
+cleanLeft0s (Positive l) = Positive (dropWhile (== 0) l)
+cleanLeft0s (Negative l) = Negative (dropWhile (== 0) l)
 ---------------------------------------
 
 -- 2.2) converte uma string em big-number
@@ -47,19 +53,29 @@ output (Positive bn) = "+" ++ nToString bn
 
 
 -- 2.4) soma dois big-numbers.
-somaBN::BigNumber -> BigNumber -> BigNumber
-somaBN a b  = let aux = [x+y | (x,y) <- zipDefault0 (bnToList a) (bnToList b)]
-              in cleanLeft0s (Positive [ x `mod` 10 + y `div` 10 | (x, y) <- zipDefault0 aux (0:aux)])
+-- TODO: Change sumDigit name
+sumDigit::[(Int, Int)] -> Int -> [Int]
+sumDigit [] r = [r]
+sumDigit ((a,b):l) r = (a+b+r)`mod`10:(sumDigit l ((a+b+r)`div`10))
 
+somaBN::BigNumber -> BigNumber -> BigNumber
+somaBN (Negative a) (Negative b) = cleanLeft0s (Negative (reverse ((sumDigit (zipDefault0 (reverse a) (reverse b)) 0))))
+somaBN (Negative a) (Positive b) = subBN (Positive b) (Positive a)
+somaBN (Positive a) (Negative b) = subBN (Positive a) (Positive b)
+somaBN (Positive a) (Positive b) = cleanLeft0s (Positive (reverse ((sumDigit (zipDefault0 (reverse a) (reverse b)) 0))))
 
 -- 2.5) subtrai dois big-numbers.
+-- TODO: Change subDigit name
+subDigit::[(Int, Int)] -> Int -> [Int]
+subDigit [] r = []
+subDigit ((a,b):l) r = (a-b+r)`mod`10:(subDigit l ((a-b+r)`div`10))
+
 subBN :: BigNumber -> BigNumber -> BigNumber
--- é preciso implementar o operador < para funcionar
---subBN a b | a >= b    = cleanLeft0s (Positive [ x `mod` 10 + y `div` 10 | (x, y) <- zipDefault0 (aux a b) (0:(aux a b))])
---          | otherwise = cleanLeft0s (Positive [ x `mod` 10 + y `div` 10 | (x, y) <- zipDefault0 (aux b a) (0:(aux b a))]) -- Não sei se isto funciona
---          where aux c d = [x-y | (x,y) <- zipDefault0 (bnToList c) (bnToList d)]
-subBN a b = let aux = [x-y | (x,y) <- zipDefault0 (bnToList a) (bnToList b)]
-            in Positive [ x `mod` 10 + y `div` 10 | (x, y) <- zipDefault0 aux (0:aux)]
+subBN (Negative a) (Negative b) = subBN  (Positive b) (Positive a)
+subBN (Negative a) (Positive b) = somaBN (Negative a) (Negative b)
+subBN (Positive a) (Negative b) = somaBN (Positive a) (Positive b)
+subBN (Positive a) (Positive b) | Positive a < Positive b = cleanLeft0s (Negative (reverse (((subDigit (zipDefault0 (reverse b) (reverse a)) 0)))))
+                                | otherwise               = cleanLeft0s (Positive (reverse (((subDigit (zipDefault0 (reverse a) (reverse b)) 0)))))
 
 
 -- 2.6) multiplica dois big-numbers.
