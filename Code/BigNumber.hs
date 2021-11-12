@@ -79,7 +79,39 @@ subBN (Positive a) (Positive b) | Positive a < Positive b = cleanLeft0s (Negativ
 
 
 -- 2.6) multiplica dois big-numbers.
--- mulBN :: BigNumber -> BigNumber -> BigNumber
+-- Isto está uma confusão, deve dar para simplificar e eventualmente por mais eficeiente
+-- Além disso os nomes estão horríveis
+
+-- Exemplo para demonstrar a ideia: 5194 * 76 = 394744
+-- a = [4, 9, 1, 5], b = [6, 7]
+-- Com o pairMulOp fica [[(4,6),(9,6),(1,6),(5,6)],[(4,7),(9,7),(1,7),(5,7)]]
+-- Com o mulDigit aplicado ao primeiro elemento da lista anterior por exemplo ficaria [0+4, 2+4, 5+6 (mod 10), 1+0, 3+nada] = [4, 6, 1, 1, 3], 
+-- ou seja o mesmo que fazer 5194*6 e depois fazer-se-ia 5194*7
+-- o listSumsToDo faz uma lista de listas: aplica o mulDigit a cada lista do pairMulOp
+-- o mul10expN pega na lista de lista anteriores e vai acrescentando um 0 ao inicio de cada uma, tipo ir multiplicando por 10 mas recursivamente e excluindo o primeiro a cada iteração
+-- o mulBN dps soma essas listas todas obtidas no anterior
+
+pairMulOp::[Int] -> [Int] -> [[(Int, Int)]]
+pairMulOp xs [] = []
+pairMulOp xs (y:ys) = [(a, y) | a <- xs]:pairMulOp xs ys
+
+mulDigit::[(Int, Int)] -> Int -> [Int]
+mulDigit [] r = [r]
+mulDigit ((a,b):l) r = (a*b+r)`mod`10:(mulDigit l ((a*b+r)`div`10))
+
+listSumsToDo::[Int] -> [Int] -> [[Int]]
+listSumsToDo xs ys = [mulDigit l 0 | l <- pairMulOp xs ys]
+
+mul10expN::[[Int]] -> [[Int]]
+mul10expN [] = []
+mul10expN (x:xs) = x:[(0:a) | a <- mul10expN xs] 
+
+mulBN :: BigNumber -> BigNumber -> BigNumber
+mulBN (Negative a) (Negative b) = Positive (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Negative a) (Positive b) = Negative (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Positive a) (Negative b) = Negative (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Positive a) (Positive b) = Positive (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+
 
 
 
