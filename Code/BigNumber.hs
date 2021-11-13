@@ -16,6 +16,7 @@ instance Ord BigNumber where
     (Positive a) < (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) < output (Positive b)))
 
 -------- FUNÇÕES AUXILIARES ---------
+
 -- Gera uma lista de pares de elementos de igual indice, associando com 0 os que não têm correspondencia
 zip0 :: [Int] -> [Int] -> [(Int, Int)]
 zip0 [] []         = []
@@ -29,8 +30,10 @@ cleanLeft0s [] = []
 cleanLeft0s l  = (dropWhile (== 0) (init l)) ++ [last l]
 
 -- converte um BigNumber para uma lista de inteiros
-bnToList::BigNumber -> [Int]
-bnToList (Positive l) = l
+bnList :: BigNumber -> [Int]
+bnList (Positive l) = l
+bnList (Negative l) = l
+
 ---------------------------------------
 
 -- 2.2) converte uma string em big-number
@@ -114,13 +117,33 @@ mul10expN [] = []
 mul10expN (x:xs) = x:[(0:a) | a <- mul10expN xs] 
 
 mulBN :: BigNumber -> BigNumber -> BigNumber
-mulBN (Negative a) (Negative b) = Positive (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-mulBN (Negative a) (Positive b) = Negative (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-mulBN (Positive a) (Negative b) = Negative (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-mulBN (Positive a) (Positive b) = Positive (bnToList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Negative a) (Negative b) = Positive (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Negative a) (Positive b) = Negative (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Positive a) (Negative b) = Negative (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
+mulBN (Positive a) (Positive b) = Positive (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
 
+----- 2.6) TENTATIVA 2 ----
+-- Multiplica um numero por um unico digito, levando o que fica como resto (?-TODO tentar arranjar mecanismo que nao precisa do r-?)
+mulDigit' :: [Int] -> Int -> Int -> [Int]
+mulDigit' _  0 _ = [0]
+mulDigit' xs 1 _ = xs
+mulDigit' [] _ r = if (r /= 0) then [r] else []
+mulDigit' (x:xs) d r = (x*d + r) `mod` 10 : (mulDigit' xs d ((x*d + r) `div` 10))
 
+-- Forma as parcelas da multiplicacao de um número por cada um dos digitos do segundo 
+-- já deslocados com o numero de 0's correspondentes à sua posição 
+mulParcelas :: [Int] -> [Int] -> [[Int]]
+mulParcelas xs ys = [(take i (repeat 0)) ++ (mulDigit' xs y 0) | (y, i) <- zip ys [0..] ]
 
+-- TODO :: nao queria repetir 4 vezes a mesma coisa em baixo uma vez que so muda o sinal, mas tambem nao gosto muito assim...
+mulNs :: [Int] -> [Int] -> [Int]
+mulNs a b = bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse a) (reverse b)])
+
+mulBN' :: BigNumber -> BigNumber -> BigNumber
+mulBN' (Negative a) (Negative b) = Positive (mulNs a b)
+mulBN' (Negative a) (Positive b) = Negative (mulNs a b)
+mulBN' (Positive a) (Negative b) = Negative (mulNs a b)
+mulBN' (Positive a) (Positive b) = Positive (mulNs a b)
 
 -- 2.7) efetua a divisão inteira de dois big-numbers. Retornar um par “(quociente, resto)” 
 -- [Assumindo que ambos os argumentos são positivos]
