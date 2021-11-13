@@ -16,17 +16,18 @@ instance Ord BigNumber where
     (Positive a) < (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) < output (Positive b)))
 
 -------- FUNÇÕES AUXILIARES ---------
--- O mesmo que zip mas em vez de descartar os elementos a mais de uma lista acrescenta 0s na menor lista
-zipDefault0::[Int] -> [Int] -> [(Int, Int)]
-zipDefault0 [] []         = []
-zipDefault0 (x:xs) []     = (x,0):(zipDefault0 xs [])
-zipDefault0 [] (y:ys)     = (0,y):(zipDefault0 [] ys)
-zipDefault0 (x:xs) (y:ys) = (x,y):(zipDefault0 xs ys)
+-- Gera uma lista de pares de elementos de igual indice, associando com 0 os que não têm correspondencia
+zip0 :: [Int] -> [Int] -> [(Int, Int)]
+zip0 [] []         = []
+zip0 xs []         = [(x, 0) | x <- xs]
+zip0 [] ys         = [(0, y) | y <- ys]
+zip0 (x:xs) (y:ys) = (x,y) : (zip0 xs ys)
+
 -- converte um BigNumber para uma lista de inteiros
 bnToList::BigNumber -> [Int]
 bnToList (Positive l) = l
 -- Limpa os zeros à esquerda
-cleanLeft0s::BigNumber -> BigNumber
+cleanLeft0s :: BigNumber -> BigNumber
 cleanLeft0s (Positive l) = Positive (dropWhile (== 0) l)
 cleanLeft0s (Negative l) = Negative (dropWhile (== 0) l)
 ---------------------------------------
@@ -52,15 +53,21 @@ output (Positive bn) = "+" ++ nToString bn
 
 -- 2.4) soma dois big-numbers.
 -- TODO: Change sumDigit name
-sumDigit::[(Int, Int)] -> Int -> [Int]
+sumDigit :: [(Int, Int)] -> Int -> [Int]
 sumDigit [] r = [r]
 sumDigit ((a,b):l) r = (a+b+r)`mod`10:(sumDigit l ((a+b+r)`div`10))
 
-somaBN::BigNumber -> BigNumber -> BigNumber
-somaBN (Negative a) (Negative b) = cleanLeft0s (Negative (reverse ((sumDigit (zipDefault0 (reverse a) (reverse b)) 0))))
+sumPar :: [(Int, Int)] -> [Int]
+sumPar [] = []
+sumPar ((a,b):[]) = (a + b) `mod` 10 : let r = (a + b) `div` 10 
+                                        in if (r /= 0) then [r] else []
+sumPar ((a,b):(c,d):l) = (a + b) `mod` 10 : sumPar ((c, d + ((a + b) `div` 10)) : l)
+
+somaBN :: BigNumber -> BigNumber -> BigNumber
+somaBN (Negative a) (Negative b) = cleanLeft0s (Negative (reverse ((sumDigit (zip0 (reverse a) (reverse b)) 0))))
 somaBN (Negative a) (Positive b) = subBN (Positive b) (Positive a)
 somaBN (Positive a) (Negative b) = subBN (Positive a) (Positive b)
-somaBN (Positive a) (Positive b) = cleanLeft0s (Positive (reverse ((sumDigit (zipDefault0 (reverse a) (reverse b)) 0))))
+somaBN (Positive a) (Positive b) = cleanLeft0s (Positive (reverse ((sumDigit (zip0 (reverse a) (reverse b)) 0))))
 
 -- 2.5) subtrai dois big-numbers.
 -- TODO: Change subDigit name
@@ -72,8 +79,8 @@ subBN :: BigNumber -> BigNumber -> BigNumber
 subBN (Negative a) (Negative b) = subBN  (Positive b) (Positive a)
 subBN (Negative a) (Positive b) = somaBN (Negative a) (Negative b)
 subBN (Positive a) (Negative b) = somaBN (Positive a) (Positive b)
-subBN (Positive a) (Positive b) | Positive a < Positive b = cleanLeft0s (Negative (reverse (((subDigit (zipDefault0 (reverse b) (reverse a)) 0)))))
-                                | otherwise               = cleanLeft0s (Positive (reverse (((subDigit (zipDefault0 (reverse a) (reverse b)) 0)))))
+subBN (Positive a) (Positive b) | Positive a < Positive b = cleanLeft0s (Negative (reverse (((subDigit (zip0 (reverse b) (reverse a)) 0)))))
+                                | otherwise               = cleanLeft0s (Positive (reverse (((subDigit (zip0 (reverse a) (reverse b)) 0)))))
 
 
 -- 2.6) multiplica dois big-numbers.
