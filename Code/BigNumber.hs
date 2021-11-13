@@ -23,14 +23,14 @@ zip0 xs []         = [(x, 0) | x <- xs]
 zip0 [] ys         = [(0, y) | y <- ys]
 zip0 (x:xs) (y:ys) = (x, y) : (zip0 xs ys)
 
+-- Limpa os zeros à esquerda da lista, garantindo que pelo menos existe 1
+cleanLeft0s :: [Int] -> [Int]
+cleanLeft0s [] = []
+cleanLeft0s l  = (dropWhile (== 0) (init l)) ++ [last l]
+
 -- converte um BigNumber para uma lista de inteiros
 bnToList::BigNumber -> [Int]
 bnToList (Positive l) = l
--- Limpa os zeros à esquerda
--- TODO :: Probelma quando é Positive [0,0] fica vazia
-cleanLeft0s :: BigNumber -> BigNumber
-cleanLeft0s (Positive l) = Positive (dropWhile (== 0) l)
-cleanLeft0s (Negative l) = Negative (dropWhile (== 0) l)
 ---------------------------------------
 
 -- 2.2) converte uma string em big-number
@@ -53,6 +53,7 @@ output (Positive bn) = "+" ++ nToString bn
 
 
 -- 2.4) soma dois big-numbers.
+-- TODO:: change name
 sumPar :: [(Int, Int)] -> [Int]
 sumPar [] = []
 sumPar ((a,b):[]) = (a + b) `mod` 10 : let r = (a + b) `div` 10 
@@ -60,18 +61,14 @@ sumPar ((a,b):[]) = (a + b) `mod` 10 : let r = (a + b) `div` 10
 sumPar ((a,b):(c,d):l) = (a + b) `mod` 10 : sumPar ((c, d + ((a + b) `div` 10)) : l)
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
-somaBN (Negative a) (Negative b) = Negative (reverse (sumPar (zip0 (reverse a) (reverse b))))
+somaBN (Negative a) (Negative b) = Negative (cleanLeft0s (reverse (sumPar (zip0 (reverse a) (reverse b)) ) ))
 somaBN (Negative a) (Positive b) = subBN (Positive b) (Positive a)
 somaBN (Positive a) (Negative b) = subBN (Positive a) (Positive b)
-somaBN (Positive a) (Positive b) = Positive (reverse (sumPar (zip0 (reverse a) (reverse b))))
+somaBN (Positive a) (Positive b) = Positive (cleanLeft0s (reverse (sumPar (zip0 (reverse a) (reverse b)) ) ))
 
 
 -- 2.5) subtrai dois big-numbers.
--- TODO: Change subDigit name
-subDigit::[(Int, Int)] -> Int -> [Int]
-subDigit [] r = []
-subDigit ((a,b):l) r = (a-b+r)`mod`10:(subDigit l ((a-b+r)`div`10))
-
+-- TODO:: change name
 subPar :: [(Int, Int)] -> [Int]
 subPar [] = []
 subPar ((a,b):[]) = [(a - b)]
@@ -84,8 +81,8 @@ subBN :: BigNumber -> BigNumber -> BigNumber
 subBN (Negative a) (Negative b) = subBN  (Positive b) (Positive a)
 subBN (Negative a) (Positive b) = somaBN (Negative a) (Negative b)
 subBN (Positive a) (Negative b) = somaBN (Positive a) (Positive b)
-subBN (Positive a) (Positive b) | Positive a < Positive b = cleanLeft0s (Negative (reverse (((subDigit (zip0 (reverse b) (reverse a)) 0)))))
-                                | otherwise               = cleanLeft0s (Positive (reverse (((subDigit (zip0 (reverse a) (reverse b)) 0)))))
+subBN (Positive a) (Positive b) | Positive a < Positive b = Negative (cleanLeft0s (reverse (subPar (zip0 (reverse b) (reverse a)) ) ))
+                                | otherwise               = Positive (cleanLeft0s (reverse (subPar (zip0 (reverse a) (reverse b)) ) ))
 
 
 -- 2.6) multiplica dois big-numbers.
