@@ -89,63 +89,48 @@ subBN (Positive a) (Positive b) | Positive a < Positive b = Negative (cleanLeft0
 
 
 -- 2.6) multiplica dois big-numbers.
--- Isto está uma confusão, deve dar para simplificar e eventualmente por mais eficeiente
--- Além disso os nomes estão horríveis
-
--- Exemplo para demonstrar a ideia: 5194 * 76 = 394744
--- a = [4, 9, 1, 5], b = [6, 7]
--- Com o pairMulOp fica [[(4,6),(9,6),(1,6),(5,6)],[(4,7),(9,7),(1,7),(5,7)]]
--- Com o mulDigit aplicado ao primeiro elemento da lista anterior por exemplo ficaria [0+4, 2+4, 5+6 (mod 10), 1+0, 3+nada] = [4, 6, 1, 1, 3], 
--- ou seja o mesmo que fazer 5194*6 e depois fazer-se-ia 5194*7
--- o listSumsToDo faz uma lista de listas: aplica o mulDigit a cada lista do pairMulOp
--- o mul10expN pega na lista de lista anteriores e vai acrescentando um 0 ao inicio de cada uma, tipo ir multiplicando por 10 mas recursivamente e excluindo o primeiro a cada iteração
--- o mulBN dps soma essas listas todas obtidas no anterior
-
-pairMulOp::[Int] -> [Int] -> [[(Int, Int)]]
-pairMulOp xs [] = []
-pairMulOp xs (y:ys) = [(a, y) | a <- xs]:pairMulOp xs ys
-
-mulDigit::[(Int, Int)] -> Int -> [Int]
-mulDigit [] r = [r]
-mulDigit ((a,b):l) r = (a*b+r)`mod`10:(mulDigit l ((a*b+r)`div`10))
-
-listSumsToDo::[Int] -> [Int] -> [[Int]]
-listSumsToDo xs ys = [mulDigit l 0 | l <- pairMulOp xs ys]
-
-mul10expN::[[Int]] -> [[Int]]
-mul10expN [] = []
-mul10expN (x:xs) = x:[(0:a) | a <- mul10expN xs] 
-
-mulBN :: BigNumber -> BigNumber -> BigNumber
-mulBN (Negative a) (Negative b) = Positive (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-mulBN (Negative a) (Positive b) = Negative (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-mulBN (Positive a) (Negative b) = Negative (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-mulBN (Positive a) (Positive b) = Positive (bnList (foldl (somaBN) (Positive []) [Positive (reverse x) | x <- (mul10expN(listSumsToDo (reverse a) (reverse b)))]))
-
------ 2.6) TENTATIVA 2 ----
 -- Multiplica um numero por um unico digito, levando o que fica como resto (?-TODO tentar arranjar mecanismo que nao precisa do r-?)
-mulDigit' :: [Int] -> Int -> Int -> [Int]
-mulDigit' _  0 _ = [0]
-mulDigit' xs 1 _ = xs
-mulDigit' [] _ r = if (r /= 0) then [r] else []
-mulDigit' (x:xs) d r = (x*d + r) `mod` 10 : (mulDigit' xs d ((x*d + r) `div` 10))
+mulDigit :: [Int] -> Int -> Int -> [Int]
+mulDigit _  0 _ = [0]
+mulDigit xs 1 _ = xs
+mulDigit [] _ r = if (r /= 0) then [r] else []
+mulDigit (x:xs) d r = (x*d + r) `mod` 10 : (mulDigit xs d ((x*d + r) `div` 10))
 
 -- Forma as parcelas da multiplicacao de um número por cada um dos digitos do segundo 
 -- já deslocados com o numero de 0's correspondentes à sua posição 
 mulParcelas :: [Int] -> [Int] -> [[Int]]
-mulParcelas xs ys = [(take i (repeat 0)) ++ (mulDigit' xs y 0) | (y, i) <- zip ys [0..] ]
+mulParcelas xs ys = [(take i (repeat 0)) ++ (mulDigit xs y 0) | (y, i) <- zip ys [0..] ]
 
 -- TODO :: nao queria repetir 4 vezes a mesma coisa em baixo uma vez que so muda o sinal, mas tambem nao gosto muito assim...
 mulNs :: [Int] -> [Int] -> [Int]
 mulNs a b = bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse a) (reverse b)])
 
-mulBN' :: BigNumber -> BigNumber -> BigNumber
-mulBN' (Negative a) (Negative b) = Positive (mulNs a b)
-mulBN' (Negative a) (Positive b) = Negative (mulNs a b)
-mulBN' (Positive a) (Negative b) = Negative (mulNs a b)
-mulBN' (Positive a) (Positive b) = Positive (mulNs a b)
+mulBN :: BigNumber -> BigNumber -> BigNumber
+mulBN (Negative a) (Negative b) = Positive (mulNs a b)
+mulBN (Negative a) (Positive b) = Negative (mulNs a b)
+mulBN (Positive a) (Negative b) = Negative (mulNs a b)
+mulBN (Positive a) (Positive b) = Positive (mulNs a b)
 
 -- 2.7) efetua a divisão inteira de dois big-numbers. Retornar um par “(quociente, resto)” 
 -- [Assumindo que ambos os argumentos são positivos]
--- divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 
+-- Produz uma sucessão infinita a partir de i
+sucBN :: BigNumber -> [BigNumber]
+sucBN i = i : sucBN (somaBN i (Positive [1]))
+
+-- Produz lista infinita dos mútiplos de n
+multiplosBN :: BigNumber -> [BigNumber]
+multiplosBN n = [mulBN x i | (x, i) <- zip (repeat n) (sucBN (Positive [1]))]
+
+-- Retorna o comprimento de uma lista em BigNumber
+lengthBN :: [a] -> BigNumber
+lengthBN [] = Positive [0]
+lengthBN (x:xs) = somaBN (Positive [1]) (lengthBN xs)
+
+divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+divBN (Positive a) (Positive b) = (lengthBN x, subBN (Positive a) (last x))
+          where x = takeWhile (< (Positive a)) (multiplosBN (Positive b))
+-- como se assume que são Positivos é necessário colocar (Positive a) como parametro ou basta (a)?
+divBN' :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+divBN' a b = (lengthBN x, subBN a (last x))
+          where x = takeWhile (< a) (multiplosBN b)
