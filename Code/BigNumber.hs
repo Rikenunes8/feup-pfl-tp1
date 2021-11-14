@@ -103,13 +103,14 @@ mulParcelas xs ys = [(take i (repeat 0)) ++ (mulDigit xs y 0) | (y, i) <- zip ys
 
 -- TODO :: nao queria repetir 4 vezes a mesma coisa em baixo uma vez que so muda o sinal, mas tambem nao gosto muito assim...
 mulNs :: [Int] -> [Int] -> [Int]
-mulNs a b = bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse a) (reverse b)])
+mulNs a b = cleanLeft0s(bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse a) (reverse b)]))
 
 mulBN :: BigNumber -> BigNumber -> BigNumber
 mulBN (Negative a) (Negative b) = Positive (mulNs a b)
 mulBN (Negative a) (Positive b) = Negative (mulNs a b)
 mulBN (Positive a) (Negative b) = Negative (mulNs a b)
 mulBN (Positive a) (Positive b) = Positive (mulNs a b)
+
 
 -- 2.7) efetua a divisão inteira de dois big-numbers. Retornar um par “(quociente, resto)” 
 -- [Assumindo que ambos os argumentos são positivos]
