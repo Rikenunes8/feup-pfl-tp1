@@ -131,9 +131,17 @@ mulBN' a b
 -- 2.7) efetua a divisão inteira de dois big-numbers. Retornar um par “(quociente, resto)” 
 -- [Assumindo que ambos os argumentos são positivos]
 
+
+-- lastSmallBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+-- lastSmallBN n d = last (takeWhile (\(q, dq) -> dq <= n) [ (i, mulBN d i) | i <- sucBN (Positive [0]) ])
+
 -- Produz uma sucessão infinita a partir de i
 sucBN :: BigNumber -> [BigNumber]
 sucBN i = i : sucBN (somaBN i (Positive [1]))
+
+divBN'' :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+divBN'' a b = (q, subBN a dq)
+    where (q, dq) = last (takeWhile (\(q, dq) -> dq <= a) [ (i, mulBN b i) | i <- sucBN (Positive [0]) ])
 
 -- Produz lista infinita dos mútiplos de n
 multiplosBN :: BigNumber -> [BigNumber]
