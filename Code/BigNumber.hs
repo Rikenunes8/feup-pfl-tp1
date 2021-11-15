@@ -1,4 +1,4 @@
-module BigNumber (BigNumber) where
+module BigNumber (BigNumber, scanner, output, somaBN, subBN, mulBN, divBN) where
 
 import Data.Char (digitToInt)
 
