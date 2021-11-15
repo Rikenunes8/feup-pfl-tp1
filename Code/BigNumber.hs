@@ -103,13 +103,29 @@ mulParcelas xs ys = [(take i (repeat 0)) ++ (mulDigit xs y 0) | (y, i) <- zip ys
 
 -- TODO :: nao queria repetir 4 vezes a mesma coisa em baixo uma vez que so muda o sinal, mas tambem nao gosto muito assim...
 mulNs :: [Int] -> [Int] -> [Int]
-mulNs a b = cleanLeft0s(bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse a) (reverse b)]))
+mulNs a b = cleanLeft0s (bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse a) (reverse b)]))
 
 mulBN :: BigNumber -> BigNumber -> BigNumber
 mulBN (Negative a) (Negative b) = Positive (mulNs a b)
 mulBN (Negative a) (Positive b) = Negative (mulNs a b)
 mulBN (Positive a) (Negative b) = Negative (mulNs a b)
 mulBN (Positive a) (Positive b) = Positive (mulNs a b)
+
+-- QUESTAO.. QUAL É MAIS HASKELL?
+isNegative :: BigNumber -> Bool
+isNegative (Negative _) = True
+isNegative _            = False
+
+isPositive :: BigNumber -> Bool
+isPositive (Positive _) = True
+isPositive _            = False
+
+mulBN' :: BigNumber -> BigNumber -> BigNumber
+mulBN' a b 
+    | (isNegative a && isNegative b) || (isPositive a && isPositive b) = Positive m
+    | otherwise                                                        = Negative m
+    where m = cleanLeft0s (bnList (foldr somaBN (Positive []) [Positive (reverse p) | p <- mulParcelas (reverse (bnList a)) (reverse (bnList b))]))
+
 
 
 -- 2.7) efetua a divisão inteira de dois big-numbers. Retornar um par “(quociente, resto)” 
@@ -128,10 +144,19 @@ lengthBN :: [a] -> BigNumber
 lengthBN [] = Positive [0]
 lengthBN (x:xs) = somaBN (Positive [1]) (lengthBN xs)
 
+-- 4 / 5
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
-divBN (Positive a) (Positive b) = (lengthBN x, subBN (Positive a) (last x))
+divBN (Positive a) (Positive b) = (q, r)
           where x = takeWhile (< (Positive a)) (multiplosBN (Positive b))
+                q = lengthBN x
+                r = if (q == (Positive [0])) then (Positive a) else subBN (Positive a) (last x)
+                
 -- como se assume que são Positivos é necessário colocar (Positive a) como parametro ou basta (a)?
 divBN' :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBN' a b = (lengthBN x, subBN a (last x))
           where x = takeWhile (< a) (multiplosBN b)
+
+--25 / 4
+--[0, 0, 0, 0, 0, 24]
+-- - > (24, 6) -> q = 6 ; r (25 - 24)
+-- ESTRATEGIA: 
