@@ -14,7 +14,6 @@ instance Show BigNumber where
 
 instance Ord BigNumber where
     (Positive a) <= (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) <= output (Positive b))) 
-    (Positive a) < (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) < output (Positive b)))
 
 -------- FUNÇÕES AUXILIARES ---------
 
@@ -129,4 +128,5 @@ divBN a b = (q, subBN a dq)
 
 safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
 safeDivBN a (Positive [0]) = Nothing
+safeDivBN a (Negative [0]) = Nothing
 safeDivBN a b = Just (divBN a b)
