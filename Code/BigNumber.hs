@@ -1,6 +1,7 @@
 module BigNumber (BigNumber(Positive, Negative), scanner, output, somaBN, subBN, mulBN, divBN) where
 
 import Data.Char (digitToInt)
+import Data.Maybe
 
 -- 2.1) a definição do tipo BigNumber
 data BigNumber = Positive [Int] 
@@ -120,3 +121,12 @@ sucBN i = i : sucBN (somaBN i (Positive [1]))
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBN a b = (q, subBN a dq)
     where (q, dq) = last (takeWhile (\(q, dq) -> dq <= a) [ (i, mulBN b i) | i <- sucBN (Positive [0]) ])
+
+
+
+-- 5) Detetar divisões por zero em compile-time. Para isso, a função divisão deverá retornar monads do tipo Maybe. 
+--    A função alternativa para a divisão inteira deverá se chamar safeDivBN e ter o tipo:
+
+safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
+safeDivBN a (Positive [0]) = Nothing
+safeDivBN a b = Just (divBN a b)
