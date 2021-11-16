@@ -2,8 +2,8 @@
 
 -- 1.1) Funcao Recursiva
 fibRec :: (Integral a) => a -> a
-fibRec 1 = 0
-fibRec 2 = 1
+fibRec 0 = 0
+fibRec 1 = 1
 fibRec n 
     | n > 0     = fibRec (n - 2) + fibRec (n - 1) 
     | otherwise = error "argumento não positivo"
@@ -19,12 +19,12 @@ expandirSeq xs n = expandirSeq (xs ++ [somaUltimos2 xs]) (n - 1)
 
 fibLista :: (Integral a) => a -> a
 fibLista n 
-    | n <= 0    = error "argumento não positivo"
+    | n < 0    = error "argumento não positivo"
     | i < len   = lista !! i
     | otherwise = (expandirSeq lista (i + 1 - len)) !! i
-    where lista = [0, 1, 1, 2, 3, 5, 8, 13]
+    where lista = [0, 1]
           len   = length lista
-          i     = fromIntegral(n - 1)
+          i     = fromIntegral(n)
           
 
 -- 1.3) Versao com Lista Infinita
@@ -32,4 +32,4 @@ fibListaInfinita :: (Integral a) => a -> a
 fibListaInfinita n 
     | n <= 0     = error "argumento não positivo"
     | otherwise = let fibs = (0 : 1 : [a + b | (a,b) <- zip fibs (tail fibs)])
-                  in fibs !! fromIntegral(n - 1)
+                  in fibs !! fromIntegral(n)
