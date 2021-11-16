@@ -42,9 +42,9 @@ stringToN :: String -> [Int]
 stringToN = foldr (\x y -> digitToInt x : y) []
 
 scanner :: String -> BigNumber
-scanner ('-':s) = Negative (stringToN s)
-scanner ('+':s) = Positive (stringToN s)
-scanner s       = Positive (stringToN s)
+scanner ('-':s) = Negative (cleanLeft0s (stringToN s))
+scanner ('+':s) = Positive (cleanLeft0s (stringToN s))
+scanner s       = Positive (cleanLeft0s (stringToN s))
 
 
 -- 2.3) converte um big-number em string
