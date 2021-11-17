@@ -42,21 +42,20 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Funcionamento:** Dada uma lista de *Int*, são eliminados da mesma os primeiros elementos que forem o *Int* 0. É assegurado que fica pelo menos um elemento na lista devido à concatenação do *last l*, ou seja, o último elemento da lista permanece idependentemente do seu valor.
 
 **Casos de teste:**
--
 
 
 #### `bnList`
 **Funcionamento:** Converte um BigNumber para uma lista de inteiros, ignorando assim o sinal do número.
 
 **Casos de teste:**
--
+
 
 
 #### `stringToN`
 **Funcionamento:** Percorre a lista de *Char* e cria uma lista de *Int* aplicando a função *digitToInt* do módulo *Data.Char*.
 
 **Casos de teste:**
--
+
 
 
 #### `scanner`
@@ -65,14 +64,14 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 #### `nToString`
 **Funcionamento:**
 
 **Casos de teste:**
--
+
 
 
 #### `output`
@@ -81,14 +80,14 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 #### `sumDigits`
 **Funcionamento:**
 
 **Casos de teste:**
--
+
 
 
 #### `somaBN`
@@ -97,14 +96,14 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 #### `subDigits`
 **Funcionamento:**
 
 **Casos de teste:**
--
+
 
 
 #### `subBN`
@@ -113,28 +112,28 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 #### `mulDigit`
 **Funcionamento:**
 
 **Casos de teste:**
--
+
 
 
 #### `mulParcelas`
 **Funcionamento:**
 
 **Casos de teste:**
--
+
 
 
 #### `mulNs`
 **Funcionamento:**
 
 **Casos de teste:**
--
+
 
 
 #### `mulBN`
@@ -143,14 +142,14 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 #### `sucBN`
 **Funcionamento:** Produz uma lista infinita de *BigNumber*, cujo primeiro elemento é o argumento *i* e os seguintes são o resultado de, recursivamente, somar 1 unidade ao elemento anterior na lista.
 
 **Casos de teste:**
--
+
 
 
 #### `divBN`
@@ -159,7 +158,7 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 #### `safeDivBN`
@@ -168,7 +167,7 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 **Estratégia:**
 
 **Casos de teste:**
--
+
 
 
 ---
