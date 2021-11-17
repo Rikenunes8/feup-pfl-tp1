@@ -134,6 +134,5 @@ safeDivBN a b = Just (divBN a b)
 
 safeDivBN' :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
 safeDivBN' a b
-    | cb == [0] = Nothing
-    | otherwise = Just (divBN a b)
-    where cb = cleanLeft0s (bnList b)
+    | cleanLeft0s (bnList b) == [0] = Nothing
+    | otherwise                     = Just (divBN a b)
