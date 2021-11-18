@@ -174,10 +174,39 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 
 ## Resposta à alínea 4
 
+> Comparação das resoluções das alíneas 1 e 3 com tipos (Int -> Int), (Integer -> Integer) e (BigNumber -> BigNumber), explorando a sua aplicação a números grandes e verificando qual o maior número que cada uma aceita como argumento.
+
+### (Int -> Int)
+
+O tipo *Int* permite representar inteiros de 64 bits, pelo que o maior número possível de ser representado corresponde a *2^63 - 1 = 9 223 372 036 854 775 807*. Tal informação foi também verificada pelo recurso à função **maxBound**: 
+
+![Limites_Int](imgs/bound_int.png)
+
+Testando assim uma versão das alíneas da pergunta 1, mas restringindo o tipo ao pretendido, obtivemos os seguintes resultados: 
+   
+| Argumento (n)| Resultado Esperado | Resultado Obtido
+| :--: | --: | --: |
+| 90 | 2 880 067 194 370 816 120 | 2 880 067 194 370 816 120 |
+| 91 | 4 660 046 610 375 530 309 | 4 660 046 610 375 530 309 |
+| 92 | 7 540 113 804 746 346 429 | 7 540 113 804 746 346 429 |
+| 93 | 12 200 160 415 121 876 738 | -6 246 583 658 587 674 878 |
+   
+Concluimos, que o maior número que aceita como argumento é 92, último cujo valor na sequencia é menor ao limite de *INT*.
 
 
-O ficheiro README.pdf deverá conter:
-- a descrição de vários casos de teste para todas as funções;
-- uma explicação sucinta do funcionamento de cada função;
-- as estratégias utilizadas na implementação das funções da alínea 2;
-- a resposta à alínea 4.
+### (Integer -> Integer)
+
+O tipo *Integer* é um tipo de precisão arbitrária, isto significa que consegue representar qualquer número independentemente do seu tamanho, dentro do limite da memória do computador. O limite de representação é assim tão maior quanto a memória que existe disponível. O que traduz na inexistência de *overflows*, no entanto, as operações aritméticas tornam-se relativamente lentas.
+
+(falta teste + maior argumento que aceita)
+
+
+### (BigNumber -> BigNumber)
+
+O tipo *BigNumber* é representado como uma lista de digitos. Por isso, não existe um limite de representação tão rigido como explorado nos pontos acima. Este assim é o tipo ideal a usar quando pretendemos trabalhar com números relativamente grandes. Provavelmente, traduzirá computações mais pessadas devido a operações internas, mas é superior a nível da representação dos números.
+
+(falta teste + maior argumento que aceita)
+
+---
+
+*NOTA*: Os testes apresentados foram realizados principalmente com recurso às função do tipo lista, de forma a contornar a complexidade inerente à  função fibRec que é de ordem exponencial.
