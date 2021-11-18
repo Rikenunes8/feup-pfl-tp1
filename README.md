@@ -20,12 +20,67 @@ Por cada ficheiro de código-fonte é apresentado, por função, uma explicaçã
 
 Em específico, para as funções da alínea 2 também são exploradas as estratégias utilizadas na sua implementação.
 
-<br>
+
 
 ### Fib.hs
 
+#### `fibRec`
+**Funcionamento:** Implementa uma abordagem recursiva no cálculo do
+enésimo número de Fibonacci.
 
-<br>
+| **Casos de teste:** | |
+| -- | -- |
+| Índice 0 | fibRec 0 = 0 |
+| Índice 1 | fibRec 1 = 1 |
+| Índice 10 | fibRec 10 = 55 |
+
+
+#### `somaUltimos2`
+**Funcionamento:** Soma os últimos dois elementos de uma lista: último e penúltimo. Assume que a lista tem no minimo dois elementos.
+
+| **Casos de teste:** | |
+| -- | -- |
+| Lista com 2 elementos | somaUltimos2 [0,1] = 1 |
+| Lista com mais que 2 elementos | somaUltimos2 [0,1,1,2,3] = 5 |
+
+
+#### `expandirSeq`
+**Funcionamento:** Aumenta recursivamente uma determinada lista em 'n' elementos, sendo que um novo elemento é calculando a partir da soma dos dois ultimos.
+
+| **Casos de teste:** | |
+| -- | -- |
+| Aumentar a lista em 0 elementos | expandirSeq [0,1] 0 = [0,1] |
+| Aumentar a lista em 1 elemento | expandirSeq [0,1] 1 = [0,1,1] |
+| Aumentar a lista em mais que 1 elemento | expandirSeq [0,1] 4 = [0,1,1,2,3,5] |
+
+
+#### `fibLista`
+**Funcionamento:** Implementa uma abordagem de programação dinâmica no cálculo do
+enésimo número de Fibonacci. Tira partido de uma lista auxiliar com resultados parciais.
+
+| **Casos de teste:** | |
+| -- | -- |
+| Índice 0 | fibLista 0 = 0 |
+| Índice 1 | fibLista 1 = 1 |
+| Índice 10 | fibLista 10 = 55 |
+
+
+#### `fibListaInfinita`
+**Funcionamento:** Implementa uma abordagem que calcula o
+enésimo número de Fibonacci apartir da geração de uma lista infinita.
+
+| **Casos de teste:** | |
+| -- | -- |
+| Índice 0 | fibListaInfinita 0 = 0 |
+| Índice 1 | fibListaInfinita 1 = 1 |
+| Índice 10 | fibListaInfinita 10 = 55 |
+
+
+#### `fibRecBN`, `somaUltimos2BN`, `expandirSeqBN`, `fibListaBN`, `fibListaInfinitaBN`
+
+Aplicação da mesma funcionalidade descrita nos pontos acima, mas para o tipo BigNumber. Os casos de teste aplicados aqui foram os mesmos apresentados nos pontos anteriores adaptados de forma a cumprirem a sintaze inerente a este tipo de dados.
+
+
 
 ### BigNumber.hs
 
