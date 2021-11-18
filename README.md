@@ -198,6 +198,8 @@ Concluimos, que o maior número que aceita como argumento é 92, último cujo va
 
 O tipo *Integer* é um tipo de precisão arbitrária, isto significa que consegue representar qualquer número independentemente do seu tamanho, dentro do limite da memória do computador. O limite de representação é assim tão maior quanto a memória que existe disponível. O que traduz na inexistência de *overflows*, no entanto, as operações aritméticas tornam-se relativamente lentas.
 
+![Limites_Integer](imgs/bound_integer.png)
+
 (falta teste + maior argumento que aceita)
 
 
