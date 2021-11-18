@@ -100,81 +100,123 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 
 
 #### `sumDigits`
-**Funcionamento:**
+**Funcionamento:** Aplica o algoritmo da soma da primária (contas em pé), onde somamos cada par de digitos guardando o digito das unidades e passando para a proxima soma o resto que resulta dessa adição. A soma é realizada da esquerda para a direita do conjunto de pares (primeiro par corresponde aos algarismos das unidades).
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Um par sem resto | sumDigits [(1,2)] = [3] |
+| Um par com resto | sumDigits [(1,9)] = [0,1] |
+| Varios pares de digitos a somar | sumDigits [(1,2), (3,9)] = [3,2,1] |
 
 
 #### `somaBN`
-**Funcionamento:**
+**Funcionamento:** Soma dois BigNumber, apresentando o resultado sem zeros à esquerda.
 
-**Estratégia:**
+**Estratégia:** Os digitos dos dois BigNumber a somar são emparelhados de forma a que em cada par de dígitos se encontrem os digitos do mesmo indice (unidades, dezenas, centenas, etc) e a que este conjunto de pares contenha mais à esquerda os digitos de menor peso no valor do numero. O resultado equivale assim a um BigNumber cujos digitos corresponde à soma destes pares em ordem reversa. Exemplificando:
+
+~~~~
+resto:                1         0         0
+          123        123        123        123
+        + 359  ->  + 359  ->  + 359  ->  + 359
+       ------     ------     ------     ------
+                       2         82        482
+~~~~
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
+| Soma de zeros | somaBN (Positive [0]) (Positive [0]) = Positive [0] |
+| Soma de negativos | somaBN (Negative [1,2,3]) (Negative [3,5,9]) = Negative [4,8,2] |
+| Soma de positivos | somaBN (Positive [1,2,3]) (Positive [3,5,9]) = Positive [4,8,2] |
 
+*Nota:* As somas entre um número negativo e positivo foram traduzidas pela respetiva subtração tomando partido da propriedade comutativa destas operações aritméticas.
 
 
 #### `subDigits`
-**Funcionamento:**
+**Funcionamento:** Aplica o algoritmo da subtração da primária (contas em pé), onde subtraimos cada par de digitos guardando o digito das unidades e adicionando ao digito do elemento de baixo o resto que resulta dessa subtração sempre que em cada par o primeiro digito é menor do que o segundo. A subtração é realizada da esquerda para a direita do conjunto de pares (primeiro par corresponde aos algarismos das unidades), sabendo que o conjunto de primeiros digitos dos pares corresponde ao maior número.
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Um par | subDigits [(5,1)] = [4] |
+| Pares sem resto a transportar | subDigits [(5,3), (2,2)] = [2,0] |
+| Pares com resto a transportar | subDigits [(2,3), (4,2)] = [9,1] |
 
 
 #### `subBN`
-**Funcionamento:**
+**Funcionamento:** Subtrai dois BigNumber, apresentando o resultado sem zeros à esquerda.
 
-**Estratégia:**
+**Estratégia:** Para subtrair dois positivos o sinal do resultado corresponde ao sinal daquele da parcela que é maior em valor, enquanto o valor corresponde a subtrair à maior parcela a menor. Para obter este último valor subtrai-se cada par de digitos que corresponde ao mesmo indice, começando pelas unidades, tratando corretamente o resto e apresentando o resultado sem zeros à esquerda.
+
+~~~~
+                            (6 para 12) (1 passa a 2)  
+          420        420        420        420
+        - 160  ->  - 160  ->  - 160  ->  - 260
+       ------     ------     ------     ------
+                       0         60        260
+~~~~
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
+| Subtrair por zero | subBN (Positive [1,2]) (Positive [0]) = Positive [1,2] |
+| Subtrair numeros iguais | subBN (Positive [1,2]) (Positive [1,2]) = Positive [0] |
+| Subtrair com transporte de resto | subBN (Positive [4,2,0]) (Positive [1,6,0]) = Positive [2,6,0] |
 
+*Nota:* As subtrações entre um número negativo e positivo foram traduzidas pela respetiva soma tomando partido da propriedade comutativa destas operações aritméticas, bem como a subtração entre dois negativos é traduzida à subtração de dois positivos.
 
 
 #### `mulDigit`
-**Funcionamento:**
+**Funcionamento:** Multiplica um número (representado pela sua lista de dígitos) por um dígito, transportando o resto que resulta de cada multiplicação individual para a multiplicação seguinte. O digito mais à esquerda corresponde às unidades.
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
+| Multiplicação por 0 | mulDigit [2,1] 0 0 = [0] |
+| Multiplicação por 1 | mulDigit [2,1] 1 0 = [2,1] |
+| Multiplicação sem transporte | mulDigit [2,1] 2 0 = [4,2] |
+| Multiplicação com transporte | mulDigit [2,1] 6 0 = [2,7] |
 
+*Nota:* Como multiplicação e adição não são comutativas também é necessário iniciar o resto a transportar como argumento da função.
 
 
 #### `mulParcelas`
-**Funcionamento:**
+**Funcionamento:** Forma todas as parcelas que resultam da multiplicacao da primeira lista de dígitos por cada um dos digitos da segunda lista, sendo que cada parcela é deslocada (colocados zeros à esquerda) de forma ao primeiro digito com valor de cada resultado intermédio corresponda ao indice do dígito pelo qual foi multiplicado na segunda lista. O digito da esquerda corresponde ao das unidades.
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Segunda lista com 1 digito | mulParcelas [2,1] [2] = [[4,2]] |
+| Segunda lista com 2 digitos | mulParcelas [2,1] [2,1] = [[4,2],[0,2,1]] |
 
 
 #### `mulNs`
-**Funcionamento:**
+**Funcionamento:** Multiplica duas listas de digitos somando todas as parcelas que resultam da multiplicacao da primeira lista por cada um dos digitos da segunda. Recebe e retorna a lista de dígitos que representa os numeros pela ordem de leitura (à esquerda o de maior valor).
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Multiplicação sem transporte por 1 digito | mulNs [1,2] [2] = [2,4] |
+| Multiplicação sem transporte por mais digitos | mulNs [1,2] [1,2] = [1,4,4] |
+| Multiplicação com transporte por 1 digito | mulNs [1,2] [6] = [7,2]|
+| Multiplicação com transporte por mais digitos | mulNs [1,2] [6,0] = [7,2,0] |
 
 
 #### `mulBN`
 **Funcionamento:** Aplica as propriedades da multiplicação no que toca aos sinais, fazendo corresponder o sinal correto à multiplicação obtida que foi gerada independentemente dos sinais dos argumetos.
 
-**Estratégia:**
+**Estratégia:** Multiplicação da primária (conta em pé)
+
+~~~~
+                   (2*12)     (1*12)     (somar)
+          12         12         12         12
+        * 12  ->   * 12  ->   * 12  ->   * 12
+       ------     ------     ------     ------
+                     24         24         24
+                               120      + 120
+                                        ------
+                                          144
+~~~~
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Multiplicação de negativos | mulBN (Negative [1,2]) (Negative [1,2]) = Positive [1,4,4] |
+| Multiplicação de positivos | mulBN (Positive [1,2]) (Positive [1,2]) = Positive [1,4,4] |
+| Multiplicação de positivo por negativo | mulBN (Negative [1,2]) (Positive [1,2]) = Negative [1,4,4] |
 
 
 #### `sucBN`
@@ -182,30 +224,34 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Sequencia de numeros inteiros maiores e iguais a zero em BigNumber | take 10 (sucBN (Positive [0])) = [Positive [0],Positive [1],Positive [2],Positive [3],Positive [4],Positive [5],Positive [6],Positive [7],Positive [8],Positive [9]] |
 
 
 #### `divBN`
-**Funcionamento:** Começa por produzir uma lista de pares *(q, dq)* em que *dq* corresponde a múltiplos do divisor e *q* correesponde ao multiplicador que dá origem a *dq* (ou seja, *divisor \* q = dq*). Desta lista infinita de pares ordenada, vai se buscar só os elementos cujo *dq* é menor que o *dividendo* da divisão. Daí retira-se o *q* e o *dq* do último elemento da lista que correspondem, respetivamente, ao *quociente* e ao valor pelo qual a subtração do *dividendo* por ele resulta no *resto*.
+**Funcionamento:** Efetua a divisão inteira de dois BigNumber, retornando um par “(quociente, resto)”. Assume que ambos os argumentos são positivos.
 
-**Estratégia:**
+**Estratégia:** Começa por produzir uma lista de pares *(q, dq)* em que *dq* corresponde a múltiplos do divisor e *q* corresponde ao multiplicador que dá origem a *dq* (ou seja, *divisor \* q = dq*). Desta lista infinita de pares ordenada, filtra-se apenas os elementos cujo *dq* é menor ou igual que o *dividendo* da divisão. Daí retira-se o *q* e o *dq* do último elemento da lista que correspondem, respetivamente, ao *quociente* e ao valor pelo qual a subtração do *dividendo* por ele resulta no *resto*. Exemplificando:
+
+~~~
+25/4 -> qual o maior multiplo de 4 que é menor ou igual a 25? R.: 24
+     -> qual o número que multiplicado por 4 dá 24? R.: 6 = quociente
+     -> qual o resto? R.: 25 - 24 = 1
+~~~
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Divisão com quociente 0 | divBN (Positive [4]) (Positive [5]) = (Positive [0],Positive [4]) |
+| Divisão por um multiplo | divBN (Positive [1,2]) (Positive [4]) = (Positive [3],Positive [0]) |
+| Divisão com resto diferente de 0 | divBN (Positive [2,5]) (Positive [4]) = (Positive [6],Positive [1]) |
 
 
 #### `safeDivBN`
-**Funcionamento:**
-
-**Estratégia:**
+**Funcionamento/Estratégia:** Deteta divisões por zero em compile-time. Como tal, retorna monads do tipo Maybe. Pelo que só efetua uma divisão se e só se o divisor for diferente de 0.
 
 | **Casos de teste:** | |
 | -- | -- |
-| | |
-
+| Divisão por 0 | safeDivBN (Positive [4]) (Positive [0]) = Nothing |
+| Divisão com divisor diferente de 0 | safeDivBN (Positive [4]) (Positive [3]) = Just (Positive [1],Positive [1]) |
 
 
 ---
@@ -243,12 +289,12 @@ Listagem de algumas chamadas realizadas à função, para teste:
 - fibListaInfinita 1000
 - fibListaInfinita 930000
 
-Após estes testes, onde os valores na sequencia que correspondem a estes índices são número extramamente grandes, concluímos que podemos não conseguimos apresentar o maior número que aceita como argumento, uma vez que tal está diretamente relacionado com a memória disponível.
+Após estes testes, onde os valores na sequencia que correspondem a estes índices são número extramamente grandes, concluímos que não conseguimos apresentar o maior número que aceita como argumento, uma vez que tal está diretamente relacionado com a memória disponível.
 
 
 ### (BigNumber -> BigNumber)
 
-O tipo *BigNumber* é um tipo que representa um número pela lista dos seus digitos. Por isso, não existe um limite de representação tão rigido como explorado nos pontos acima. Apesar de também acabar por estar limitado pela memória disponível, por se tratar de uma lista os seus diferentes elementos, tendo em conta a forma como o *Haskell* a organiza, não necessitam de estar consecutivos em memória, tornando a sua alocação mais eficiente. Por outro lado, podemos também realçar que na definição deste tipo de dados nenhuma operação aritmética inerente ao cálculo da sequência de fibonacci gera *overfow*, já que estas apenas são feitas entre dígitos e/ou inteiros muito pequenos. Para além, de que o *Haskell* é uma linguagem muito eficiente no que diz respeito à manipulação de listas.
+O tipo *BigNumber* é um tipo que representa um número pela lista dos seus digitos. Por isso, não existe um limite de representação tão rigido como explorado nos pontos acima. Apesar de também acabar por estar limitado pela memória disponível, por se tratar de uma lista os seus diferentes elementos, tendo em conta a forma como o *Haskell* a organiza, não necessitam de estar consecutivos em memória, tornando a sua alocação mais eficiente. Por outro lado, podemos também realçar que na definição deste tipo de dados nenhuma operação aritmética inerente ao cálculo da sequência de fibonacci gera *overfow*, já que estas apenas são feitas entre dígitos e/ou inteiros muito pequenos. Para além de que o *Haskell* é uma linguagem muito eficiente no que diz respeito à manipulação de listas.
 
 Este assim é o tipo ideal a usar quando pretendemos representar números relativamente grandes.
 

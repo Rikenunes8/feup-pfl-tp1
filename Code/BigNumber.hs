@@ -6,11 +6,7 @@ import Data.Maybe
 -- 2.1) A definição do tipo BigNumber
 data BigNumber = Positive [Int] 
                | Negative [Int]
-               deriving (Eq)
-
-instance Show BigNumber where
-    show (Positive digits) = "Positive " ++ show digits
-    show (Negative digits) = "Negative " ++ show digits
+               deriving (Show, Eq)
 
 instance Ord BigNumber where
     (Positive a) <= (Positive b) = length a < length b || ((length a == length b) && (output (Positive a) <= output (Positive b))) 
