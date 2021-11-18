@@ -49,6 +49,14 @@ fibRecBN n
     | n < 0     = error "argumento negativo"
     | otherwise = somaBN (fibRecBN (n - 2)) (fibRecBN (n - 1))
 
+fibRecBN' :: BigNumber -> BigNumber
+fibRecBN' (Positive [0]) = Positive [0]
+fibRecBN' (Negative [0]) = Positive [0]
+fibRecBN' (Positive [1]) = Positive [1]
+fibRecBN' n 
+    | n < (Positive [0]) = error "argumento negativo"
+    | otherwise         = somaBN (fibRecBN' (subBN n (Positive [2]))) (fibRecBN' (subBN n (Positive [1])))
+
 
 -- 3.2) Versao Otimizada
 somaUltimos2BN :: [BigNumber] -> BigNumber
@@ -74,4 +82,16 @@ fibListaInfinitaBN n
     | n < 0     = error "argumento negativo"
     | otherwise = let fibs = (Positive [0] : Positive [1] : [somaBN a b | (a,b) <- zip fibs (tail fibs)])
                   in fibs !! fromIntegral(n)
+
+
+(@@) :: [BigNumber] -> BigNumber -> BigNumber
+(@@) [] _                   = error "index out of range"
+(@@) (x:xs) (Positive [0])  = x
+(@@) (x:xs) n               = (@@) xs (subBN n (Positive [1]))
+
+fibListaInfinitaBN' :: BigNumber -> BigNumber
+fibListaInfinitaBN' n 
+    | n < (Positive [0])     = error "argumento negativo"
+    | otherwise = let fibs = (Positive [0] : Positive [1] : [somaBN a b | (a,b) <- zip fibs (tail fibs)])
+                  in (@@) fibs n
 
