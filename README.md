@@ -346,12 +346,12 @@ Listagem de algumas chamadas realizadas à função, para teste:
 - fibListaInfinita 1000
 - fibListaInfinita 930000
 
-Após estes testes, onde os valores na sequencia que correspondem a estes índices são número extramamente grandes, concluímos que não conseguimos apresentar o maior número que aceita como argumento, uma vez que tal está diretamente relacionado com a memória disponível.
+Após estes testes, onde os valores na sequência que correspondem a estes índices são número extramamente grandes, concluímos que não conseguimos apresentar o maior número que é aceite como argumento, uma vez que tal está diretamente relacionado com a memória disponível.
 
 
 ### (BigNumber -> BigNumber)
 
-O tipo *BigNumber* é um tipo que representa um número pela lista dos seus digitos. Por isso, não existe um limite de representação tão rigido como explorado nos pontos acima. Apesar de também acabar por estar limitado pela memória disponível, por se tratar de uma lista os seus diferentes elementos, tendo em conta a forma como o *Haskell* a organiza, não necessitam de estar consecutivos em memória, tornando a sua alocação mais eficiente. Por outro lado, podemos também realçar que na definição deste tipo de dados nenhuma operação aritmética inerente ao cálculo da sequência de fibonacci gera *overfow*, já que estas apenas são feitas entre dígitos e/ou inteiros muito pequenos. Para além de que o *Haskell* é uma linguagem muito eficiente no que diz respeito à manipulação de listas.
+O tipo *BigNumber* é um tipo que representa um número pela lista dos seus dígitos. Por isso, não existe um limite de representação tão rígido como explorado nos pontos acima. Apesar de também acabar por estar limitado pela memória disponível, por se tratar de uma lista, os seus diferentes elementos - tendo em conta a forma como o *Haskell* a organiza - não necessitam de estar consecutivos em memória, tornando a sua alocação mais eficiente. Por outro lado, podemos também realçar que na definição deste tipo de dados nenhuma operação aritmética inerente ao cálculo da sequência de fibonacci gera *overfow*, já que estas apenas são feitas entre dígitos e/ou inteiros muito pequenos. Para além de que o *Haskell* é uma linguagem muito eficiente no que diz respeito à manipulação de listas.
 
 Este assim é o tipo ideal a usar quando pretendemos representar números relativamente grandes.
 
@@ -365,7 +365,7 @@ Tal como no ponto anterior, não é possível precisar o maior número que conse
 
 ### Diferentes Abordagens e os Tipos
 
-A complexidade temporal e espacial das 3 formas de implementação da sequência de fibonacci também influencia de igual forma o limite máximo do número a representar,independentemente do tipo de dados a manipular.
+A complexidade temporal e espacial das 3 formas de implementação da sequência de fibonacci também influencia de igual forma o limite máximo do número a representar, independentemente do tipo de dados a manipular.
 1. As funções menos eficientes são as de abordagem recursiva exigentes a nível, tanto de espaço como de tempo.
 2. No intermédio, estão as funções de abordagem de programação dinâmica muito exigentes a nivel de espaço o que compromete e influencia o espaço na memória disponível para a representação de cada um dos elementos da lista auxiliar. (fibListaBN 930000 => ocupação de memória de 97% no limite)
 3. As funções de abordagem de lista infinita são as mais eficientes, tanto a nível de espaço e tempo, permitindo assim reservar mais espaço para os números a representar, recebidos tanto como argumento como aqueles computacionados.
