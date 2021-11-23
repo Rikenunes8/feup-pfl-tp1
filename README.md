@@ -37,6 +37,7 @@ enésimo número de Fibonacci.
 | Lista com 2 elementos | somaUltimos2 [0,1] = 1 |
 | Lista com mais que 2 elementos | somaUltimos2 [0,1,1,2,3] = 5 |
 
+<div style="page-break-after: always;"></div>
 
 #### `expandirSeq`
 **Funcionamento:** Aumenta recursivamente uma determinada lista em 'n' elementos, sendo que um novo elemento é calculando a partir da soma dos dois ultimos.
@@ -74,7 +75,7 @@ enésimo número de Fibonacci apartir da geração de uma lista infinita.
 
 Aplicação da mesma funcionalidade descrita nos pontos acima, mas para o tipo BigNumber. Os casos de teste aplicados aqui foram os mesmos apresentados nos pontos anteriores adaptados de forma a cumprirem a sintaxe inerente a este tipo de dados.
 
-<br>
+<div style="page-break-after: always;"></div>
 
 ### 2 - BigNumber.hs
 
@@ -106,6 +107,7 @@ Aplicação da mesma funcionalidade descrita nos pontos acima, mas para o tipo B
 | BigNumber Positivo | (Positive [1,2,3]) = [1,2,3] |
 | BigNumber Negativo | (Negative [1,2,3]) = [1,2,3] |
 
+<div style="page-break-after: always;"></div>
 
 #### `stringToN`
 **Funcionamento:** Percorre a lista de *Char* e cria uma lista de *Int* aplicando a função *digitToInt* do módulo *Data.Char*, transformando assim cada dígito da *String* no seu inteiro respetivo e adicionando este à lista de inteiros.
@@ -114,7 +116,6 @@ Aplicação da mesma funcionalidade descrita nos pontos acima, mas para o tipo B
 | -- | -- |
 | String vazia | stringToN "" = [] |
 | String constituida apenas por digitos | stringToN "123" = [1,2,3] |
-
 
 #### `scanner`
 **Funcionamento/Estratégia:** Inicializa o *BigNumber* tirando partido da lista de *Int* gerada pela função *stringToN* referida anteriormente e limpando os dígitos não significativos pela aplicação da função *cleanLeft0s*. Tem em conta o primeiro caracter da *String* de forma a distinguir o *BigNumber* como positivo (*Positive*) ou negativo (*Negative*). Na ausência desse caracter de sinal é assumido que o número representado por essa *String* é positivo.
@@ -147,6 +148,7 @@ Aplicação da mesma funcionalidade descrita nos pontos acima, mas para o tipo B
 | BigNumber Positivo | output (Positive [2,3]) = "+23" |
 | BigNumber Positivo com zeros à esquerda | output (Positive [0,2,0]) = "+20" |
 
+<div style="page-break-after: always;"></div>
 
 #### `sumDigits`
 **Funcionamento:** Aplica o algoritmo da soma da primária (contas em pé), onde somamos cada par de dígitos guardando o dígito das unidades e passando para a próxima soma o resto que resulta dessa adição. A soma é realizada da esquerda para a direita do conjunto de pares (primeiro par corresponde aos algarismos das unidades).
@@ -179,6 +181,7 @@ resto:                1         0         0
 
 *Nota:* As somas entre um número negativo e positivo foram traduzidas numa subtração tomando partido da propriedade comutativa destas operações aritméticas. A subtração é realizada com a função *subBN* referida posteriormente.
 
+<div style="page-break-after: always;"></div>
 
 #### `subDigits`
 **Funcionamento:** Aplica o algoritmo da subtração da primária (contas em pé), onde subtraimos cada par de dígitos guardando o dígito das unidades e adicionando ao dígito do elemento de baixo o resto que resulta dessa subtração sempre que em cada par o primeiro dígito é menor do que o segundo. A subtração é realizada da esquerda para a direita da lista de pares (primeiro par corresponde aos algarismos das unidades). Assume-se que o conjunto de primeiros elementos dos pares representam um número superior, em módulo, ao número representado pelo conjunto de segundos elementos dos pares.
@@ -211,6 +214,7 @@ resto:                1         0         0
 
 *Nota:* As subtrações entre um número negativo e positivo foram traduzidas numa soma tomando partido da propriedade comutativa destas operações aritméticas, bem como a subtração entre dois negativos é traduzida na subtração de dois positivos.
 
+<div style="page-break-after: always;"></div>
 
 #### `mulDigit`
 **Funcionamento:** Multiplica um número (representado pela sua lista de dígitos) por um dígito, transportando o resto que resulta de cada multiplicação individual para a multiplicação seguinte. O dígito mais à esquerda corresponde às unidades.
@@ -244,6 +248,7 @@ resto:                1         0         0
 | Multiplicação com transporte por 1 dígito | mulNs [1,2] [6] = [7,2]|
 | Multiplicação com transporte por mais dígitos | mulNs [1,2] [6,0] = [7,2,0] |
 
+<div style="page-break-after: always;"></div>
 
 #### `mulBN`
 **Funcionamento:** Aplica as propriedades da multiplicação no que toca aos sinais, fazendo corresponder o sinal correto à multiplicação obtida que foi gerada independentemente dos sinais dos argumentos.
@@ -267,6 +272,7 @@ resto:                1         0         0
 | Multiplicação de positivos | mulBN (Positive [1,2]) (Positive [1,2]) = Positive [1,4,4] |
 | Multiplicação de positivo por negativo | mulBN (Negative [1,2]) (Positive [1,2]) = Negative [1,4,4] |
 
+<div style="page-break-after: always;"></div>
 
 #### `sucBN`
 **Funcionamento:** Produz uma lista infinita de *BigNumber*, cujo primeiro elemento é o argumento *i* e os seguintes são o resultado de, recursivamente, somar 1 unidade ao elemento anterior na lista.
@@ -307,6 +313,8 @@ Lista gerada:
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 ## Resposta à alínea 4
 
 > Comparação das resoluções das alíneas 1 e 3 com tipos (Int -> Int), (Integer -> Integer) e (BigNumber -> BigNumber), explorando a sua aplicação a números grandes e verificando qual o maior número que cada uma aceita como argumento.
@@ -315,7 +323,10 @@ Lista gerada:
 
 O tipo *Int* é um tipo de precisão fixa. Permite representar inteiros de 64 bits, pelo que o maior número possível de ser representado corresponde a *2^63 - 1 = 9 223 372 036 854 775 807*. Tal informação foi também verificada pelo recurso à função **maxBound**:
 
-![Limites_Int](imgs/bound_int.png)
+<div align="center">
+  <img src="imgs/bound_int.png" alt="Limites_Int">
+  <p style="margin-top:10px"><i>Figura 1: Limites de Representação do tipo Int</i></p>
+</div>
 
 Testando assim uma versão das alíneas da pergunta 1, mas restringindo o tipo ao pretendido, obtivemos os seguintes resultados:
 
@@ -333,7 +344,10 @@ Concluimos, que o maior número que aceita como argumento é 92, último cujo va
 
 O tipo *Integer* é um tipo de precisão arbitrária, isto significa que consegue representar qualquer número independentemente do seu tamanho, o desde que haja memória suficiente. O limite de representação é assim tão maior quanto a memória que existe disponível. O que se traduz na inexistência de *overflows*, no entanto, as operações aritméticas tornam-se relativamente lentas. Normalmente, é um tipo de dados usado quando se considera que um *overflow* com *Int* poderá acontecer, compromentendo a eficiência.
 
-![Limites_Integer](imgs/bound_integer.png)
+<div align="center" style="page-break-after: always;">
+  <img src="imgs/bound_integer.png" alt="Limites_Integer">
+  <p style="margin-top:10px"><i>Figura 2: Limites de Representação do tipo Integer</i></p>
+</div>
 
 Listagem de algumas chamadas realizadas à função, para teste:
 - fibListaInfinita 95
@@ -363,3 +377,10 @@ A complexidade temporal e espacial das 3 formas de implementação da sequência
 1. As funções menos eficientes são as de abordagem recursiva exigentes a nível, tanto de espaço como de tempo.
 2. No intermédio, estão as funções de abordagem de programação dinâmica muito exigentes a nivel de espaço o que compromete e influencia o espaço na memória disponível para a representação de cada um dos elementos da lista auxiliar. (fibListaBN 930000 => ocupação de memória de 97% no limite)
 3. As funções de abordagem de lista infinita são as mais eficientes, tanto a nível de espaço e tempo, permitindo assim reservar mais espaço para os números a representar, recebidos tanto como argumento como aqueles computacionados.
+
+
+<div align="right" style="margin-top: 50px;">
+  <p><i>Direitos de Autor</i></p>
+  <p style="margin-top: 10px;">Henrique Nunes (up201906852)</p>
+  <p style="margin-top: 5px;">Patrícia Oliveira (up201905427)</p>
+</div>
