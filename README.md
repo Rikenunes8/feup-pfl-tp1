@@ -14,7 +14,7 @@ Por cada ficheiro de código-fonte é apresentado, por função, uma explicaçã
 
 Em específico, para as funções da alínea 2 também são exploradas as estratégias utilizadas na sua implementação.
 
-
+<br>
 
 ### 1 - Fib.hs
 
