@@ -1,16 +1,10 @@
-# PFL_TP1_GX_NN
+# PFL_TP1_G7_05
 
 ## Configuração e/ou Instalção
 
-README que deverá ainda incluir os passos necessário para configurar e/ou instalar as componentes necessárias (em Windows e Linux).
+Neste caso, não são necessárias nenhumas configurações extraordinárias, bastando apenas entrar no interpretador ***ghci*** e carregar os ficheiros **Fib.hs** e **BigNumber.hs**, em concordância com as funções que pretende utilizar.
 
-### Windows
-
-> Aqui
-
-### Linux
-
-> Aqui
+Estas instruções são válidas tanto em *Windows* como em *Linux*.
 
 ---
 
@@ -22,7 +16,7 @@ Em específico, para as funções da alínea 2 também são exploradas as estrat
 
 
 
-### Fib.hs
+### 1 - Fib.hs
 
 #### `fibRec`
 **Funcionamento:** Implementa uma abordagem recursiva no cálculo do
@@ -80,9 +74,9 @@ enésimo número de Fibonacci apartir da geração de uma lista infinita.
 
 Aplicação da mesma funcionalidade descrita nos pontos acima, mas para o tipo BigNumber. Os casos de teste aplicados aqui foram os mesmos apresentados nos pontos anteriores adaptados de forma a cumprirem a sintaze inerente a este tipo de dados.
 
+<br>
 
-
-### BigNumber.hs
+### 2 - BigNumber.hs
 
 #### `zip0`
 **Funcionamento:** Os elementos de duas listas são emparelhados, formando pares, e quando uma delas termina a outra continua a ser emparelhada com o *Int* 0 até não ter mais elementos.
