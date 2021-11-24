@@ -337,12 +337,12 @@ Testando assim uma versão das alíneas da pergunta 1, mas restringindo o tipo a
 | 92 | 7 540 113 804 746 346 429 | 7 540 113 804 746 346 429 |
 | 93 | 12 200 160 415 121 876 738 | -6 246 583 658 587 674 878 |
 
-Concluimos, que o maior número que aceita como argumento é 92, último cujo valor na sequencia é menor ao limite de *INT*.
+Concluimos, que o maior número que é aceite como argumento é **92**, último cujo valor na sequência é menor ao limite de *INT*. Como é evidente na tabela a cima, com o argumento 93 o valor de retorno sofre *overflow*, não devolvendo o valor esperado (*12 200 160 415 121 876 738*).
 
 
 ### (Integer -> Integer)
 
-O tipo *Integer* é um tipo de precisão arbitrária, isto significa que consegue representar qualquer número independentemente do seu tamanho, o desde que haja memória suficiente. O limite de representação é assim tão maior quanto a memória que existe disponível. O que se traduz na inexistência de *overflows*, no entanto, as operações aritméticas tornam-se relativamente lentas. Normalmente, é um tipo de dados usado quando se considera que um *overflow* com *Int* poderá acontecer, compromentendo a eficiência.
+O tipo *Integer* é um tipo de precisão arbitrária, isto significa que consegue representar qualquer número independentemente do seu tamanho desde que haja memória suficiente. O limite de representação é assim tão maior quanto a memória que existe disponível. Isto traduz-se na inexistência de *overflows*, no entanto, as operações aritméticas tornam-se relativamente lentas. Normalmente, é um tipo de dados usado quando se considera que um *overflow* com *Int* poderá acontecer, compromentendo a eficiência.
 
 <div align="center" style="page-break-after: always;">
   <img src="imgs/bound_integer.png" alt="Limites_Integer">
@@ -356,12 +356,12 @@ Listagem de algumas chamadas realizadas à função, para teste:
 
 Após estes testes, onde os valores na sequência que correspondem a estes índices são número extramamente grandes, concluímos que não conseguimos apresentar o maior número que é aceite como argumento, uma vez que tal está diretamente relacionado com a memória disponível.
 
+Assim, a partir destes testes assim como os testes para os outros tipos, concluimos que o *Integer* é o tipo ideal a usar quando pretendemos representar números relativamente grandes, uma vez que tem uma representação pseudo-infinita, assim como uma eficência nas operações aritméticas superior à do tipo *BigNumber*.
 
 ### (BigNumber -> BigNumber)
 
-O tipo *BigNumber* é um tipo que representa um número pela lista dos seus dígitos. Por isso, não existe um limite de representação tão rígido como explorado nos pontos acima. Apesar de também acabar por estar limitado pela memória disponível, por se tratar de uma lista, os seus diferentes elementos - tendo em conta a forma como o *Haskell* a organiza - não necessitam de estar consecutivos em memória, tornando a sua alocação mais eficiente. Por outro lado, podemos também realçar que na definição deste tipo de dados nenhuma operação aritmética inerente ao cálculo da sequência de fibonacci gera *overfow*, já que estas apenas são feitas entre dígitos e/ou inteiros muito pequenos. Para além de que o *Haskell* é uma linguagem muito eficiente no que diz respeito à manipulação de listas.
+O tipo *BigNumber* é um tipo que representa um número pela lista dos seus dígitos. Por isso, não existe um limite de representação tão rígido como explorado nos pontos acima. Apesar de também acabar por estar limitado pela memória disponível, por se tratar de uma lista, os seus diferentes elementos - tendo em conta a forma como o *Haskell* a organiza - não necessitam de estar consecutivos em memória, tornando a sua alocação mais eficiente. Por outro lado, podemos também realçar que na definição deste tipo de dados nenhuma operação aritmética inerente ao cálculo da sequência de fibonacci gera *overfow*, já que estas apenas são feitas entre dígitos e/ou inteiros muito pequenos. Por outro lado, não se mostraram tão eficientes como o tipo *Integer* na obtenção do número de Fibonacci de ordem *n* uma vez que atige o máximo da memória disponível em índices inferiores.
 
-Este assim é o tipo ideal a usar quando pretendemos representar números relativamente grandes.
 
 Listagem de algumas chamadas realizadas à função, para teste:
 - fibListaInfinitaBN 95
@@ -376,7 +376,7 @@ Tal como no ponto anterior, não é possível precisar o maior número que conse
 A complexidade temporal e espacial das 3 formas de implementação da sequência de fibonacci também influencia de igual forma o limite máximo do número a representar, independentemente do tipo de dados a manipular.
 1. As funções menos eficientes são as de abordagem recursiva exigentes a nível, tanto de espaço como de tempo.
 2. No intermédio, estão as funções de abordagem de programação dinâmica muito exigentes a nivel de espaço o que compromete e influencia o espaço na memória disponível para a representação de cada um dos elementos da lista auxiliar. (fibListaBN 930000 => ocupação de memória de 97% no limite)
-3. As funções de abordagem de lista infinita são as mais eficientes, tanto a nível de espaço e tempo, permitindo assim reservar mais espaço para os números a representar, recebidos tanto como argumento como aqueles computacionados.
+3. As funções de abordagem de lista infinita são as mais eficientes, tanto a nível de espaço como de tempo, permitindo assim reservar mais espaço para os números a representar, recebidos tanto como argumento como aqueles computacionados.
 
 
 <div align="right" style="margin-top: 50px;">
