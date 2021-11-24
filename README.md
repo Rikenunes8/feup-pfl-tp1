@@ -1,6 +1,6 @@
 # PFL_TP1_G7_05
 
-## Configuração e/ou Instalção
+## Configuração e/ou Instalação
 
 Neste caso, não são necessárias nenhumas configurações extraordinárias, bastando apenas entrar no interpretador ***ghci*** e carregar os ficheiros **Fib.hs** e **BigNumber.hs**, em concordância com as funções que pretende utilizar.
 
