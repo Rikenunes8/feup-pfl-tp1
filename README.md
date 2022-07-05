@@ -10,8 +10,8 @@ Implementation of a Big-Number library in Haskell, including basic arithmetic op
 
 | Name               | Number    | E-Mail          | Contribution |
 | ------------------ | --------- | --------------- | :----------: |
-| Henrique Nunes     | 201906852 | 201906852@up.pt | 50%          |
-| Patrícia Oliveira  | 201905427 | 201905427@up.pt | 50%          |
+| Henrique Nunes     | 201906852 | up201906852@up.pt | 50%          |
+| Patrícia Oliveira  | 201905427 | up201905427@up.pt | 50%          |
 
 ## Configuração e/ou Instalação
 
