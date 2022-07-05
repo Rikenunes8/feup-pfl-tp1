@@ -1,5 +1,18 @@
 # PFL_TP1_G7_05
 
+Project for the Functional and Logical Programming @ FEUP - 2021/2022
+
+Implementation of a Big-Number library in Haskell, including basic arithmetic operations, to calculate the Fibonacci sequence.
+
+**Grade:** 20.0
+
+## Contributors
+
+| Name               | Number    | E-Mail          | Contribution |
+| ------------------ | --------- | --------------- | :----------: |
+| Henrique Nunes     | 201906852 | 201906852@up.pt | 50%          |
+| Patrícia Oliveira  | 201905427 | 201905427@up.pt | 50%          |
+
 ## Configuração e/ou Instalação
 
 Neste caso, não são necessárias nenhumas configurações extraordinárias, bastando apenas entrar no interpretador ***ghci*** e carregar os ficheiros **Fib.hs** e **BigNumber.hs**, em concordância com as funções que pretende utilizar.
